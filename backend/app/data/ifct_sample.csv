@@ -1,0 +1,26 @@
+food_code,food_name,region_variant,food_group,description,calories_kcal,protein_g,carbs_g,fat_g,fiber_g,calcium_mg,iron_mg,typical_portion_unit,typical_portion_grams
+IF001,Chicken Biryani,Hyderabadi,Rice Dish,"Layered rice and chicken cooked together (kachi dum), spice-forward, oil-rich",165,9.2,18.5,6.8,1.1,28,1.4,plate,300
+IF002,Chicken Biryani,Awadhi/Lucknowi,Rice Dish,"Rice and meat layered separately then dum-cooked, milder spicing, ghee-based",158,8.8,19.1,5.9,1.0,26,1.3,plate,300
+IF003,Chicken Biryani,Kolkata,Rice Dish,"Includes potato and boiled egg, comparatively lighter on meat",149,7.1,22.4,4.8,1.3,24,1.5,plate,300
+IF004,Toor Dal,Plain,Pulses,"Boiled split pigeon pea, light tempering",116,7.3,17.2,2.9,4.5,35,2.2,katori,150
+IF005,Toor Dal,Tadka-rich,Pulses,"Boiled split pigeon pea with generous ghee tempering",148,7.1,16.8,7.1,4.3,34,2.1,katori,150
+IF006,Steamed White Rice,Polished,Cereals,"Milled white rice, boiled",130,2.4,28.6,0.3,0.4,10,0.5,cup,150
+IF007,Steamed Brown Rice,Unpolished,Cereals,"Unmilled brown rice, boiled",123,2.6,25.6,1.0,1.8,10,0.6,cup,150
+IF008,Roti,Whole Wheat,Bread,"Unleavened whole wheat flatbread",120,3.6,24.0,1.0,3.0,15,1.1,piece,40
+IF009,Paratha,Refined Flour,Bread,"Pan-fried layered flatbread, refined flour, ghee-cooked",260,4.8,32.0,12.5,1.2,20,1.3,piece,60
+IF010,Paneer Butter Masala,Standard,Curry,"Cottage cheese in tomato-cream gravy",210,8.9,9.8,15.6,1.5,180,0.8,katori,150
+IF011,Rajma,Standard,Pulses,"Red kidney beans in tomato-onion gravy",127,7.8,20.1,2.1,6.4,45,2.8,katori,150
+IF012,Chole,Standard,Pulses,"Chickpeas in spiced tomato-onion gravy",164,8.4,24.3,4.2,7.1,55,3.1,katori,150
+IF013,Aloo Gobi,Standard,Vegetable,"Potato and cauliflower dry curry",97,2.4,13.6,4.0,2.9,25,0.9,katori,150
+IF014,Palak Paneer,Standard,Curry,"Cottage cheese in pureed spinach gravy",180,9.1,8.4,12.8,2.6,210,2.4,katori,150
+IF015,Masala Dosa,Standard,South Indian,"Fermented rice-lentil crepe with spiced potato filling",168,3.9,29.4,4.1,1.6,20,1.0,piece,120
+IF016,Idli,Standard,South Indian,"Steamed fermented rice-lentil cake",39,2.0,7.8,0.2,0.5,5,0.3,piece,40
+IF017,Sambar,Standard,South Indian,"Lentil and vegetable stew with tamarind",68,3.4,10.2,1.6,2.8,20,1.1,katori,150
+IF018,Full Cream Milk,Full-fat,Dairy,"Whole cow milk, unprocessed",67,3.2,4.8,4.1,0.0,120,0.1,glass,200
+IF019,Toned Milk,Toned,Dairy,"Standardized to 3% fat",58,3.1,4.7,3.0,0.0,120,0.1,glass,200
+IF020,Skimmed Milk,Skimmed,Dairy,"Fat removed, <0.5% fat",35,3.4,5.0,0.2,0.0,125,0.1,glass,200
+IF021,Gulab Jamun,Sugar Syrup,Sweet,"Fried milk-solid balls in sugar syrup",150,2.6,25.0,5.2,0.2,45,0.3,piece,40
+IF022,Kheer,Standard,Sweet,"Rice pudding with milk and sugar",130,3.0,20.5,4.2,0.3,90,0.2,katori,150
+IF023,Vegetable Thali (component),Mixed,Composite,"Reference only — decomposed into component dishes before estimation",0,0,0,0,0,0,0,plate,0
+IF024,Curd/Dahi,Plain,Dairy,"Set yogurt, unsweetened",60,3.1,4.7,3.3,0.0,150,0.1,katori,150
+IF025,Ghee,Clarified Butter,Fat,"Clarified butterfat",900,0.0,0.0,100.0,0.0,4,0.0,tsp,5
