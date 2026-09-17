@@ -1,19 +1,17 @@
 """
-Vision AI service. Its ONLY job is recognizing what food is in the photo and
-describing it in plain text — it never returns a nutrient number itself.
-Nutrient values always come later, from the database via the retrieval
-service (see architecture: recognition and lookup are deliberately separate).
-
-MOCK MODE: if no GEMINI_API_KEY is configured, `recognize_food` returns a
-caller-supplied `debug_description` instead of calling the API. This keeps
-the rest of the pipeline (retrieval, clarification, computation) fully
-testable without live credentials.
+Vision AI Service for the DietAI24 architecture.
+Generates an objective plain-text description of food items present in an image.
+Nutrient numbers and portion standards are strictly decoupled and resolved later via RAG.
 """
 from __future__ import annotations
 
-from app.config import get_settings
+import logging
+from typing import Optional
 
-settings = get_settings()
+from app.config import get_settings
+from app.rag.prompts import VISION_FOOD_IDENTIFICATION_PROMPT
+
+logger = logging.getLogger(__name__)
 
 
 class VisionRecognitionError(Exception):
@@ -22,44 +20,42 @@ class VisionRecognitionError(Exception):
 
 def recognize_food(image_bytes: bytes | None = None, debug_description: str | None = None) -> str:
     """
-    Returns a free-text description of the food(s) visible in the photo,
-    e.g. "A plate of chicken biryani with raita on the side."
+    Identifies food items visually in the photo.
+    Returns a textual description (e.g. 'A plate of chicken biryani with boiled egg and raita').
     """
-    # No image supplied: only valid if a debug description was given (testing/dev path).
+    # Offline / Mock / Debug path
     if image_bytes is None:
         if debug_description:
-            return debug_description
+            return debug_description.strip()
         raise VisionRecognitionError("Either image_bytes or debug_description is required.")
 
-    # Image supplied but no API key configured: fall back to debug_description if given,
-    # otherwise this is a hard error (can't recognize a real photo without the API).
+    settings = get_settings()
+
+    # Image provided, but no Gemini API key configured
     if not settings.gemini_api_key:
         if debug_description:
-            return debug_description
+            return debug_description.strip()
         raise VisionRecognitionError(
-            "No GEMINI_API_KEY configured. Set it in .env for live recognition, "
-            "or pass debug_description for offline testing."
+            "No GEMINI_API_KEY configured in .env. "
+            "Please provide a Gemini API key for live photo recognition, "
+            "or use the debug_description field for offline testing."
         )
 
     try:
         from google import genai
         from google.genai import types
-    except ImportError as e:
-        raise VisionRecognitionError(
-            "google-genai is not installed. Run: pip install google-genai"
-        ) from e
 
-    client = genai.Client(api_key=settings.gemini_api_key)
-    prompt = (
-        "Identify the Indian food item(s) visible in this photo. Respond with a short, "
-        "plain-text description naming the dish(es) — do not estimate nutrition, calories, "
-        "or portion size. Just describe what food is present."
-    )
-    response = client.models.generate_content(
-        model=settings.gemini_model,
-        contents=[
-            types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
-            prompt,
-        ],
-    )
-    return response.text.strip()
+        client = genai.Client(api_key=settings.gemini_api_key)
+        response = client.models.generate_content(
+            model=settings.gemini_model,
+            contents=[
+                types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
+                VISION_FOOD_IDENTIFICATION_PROMPT,
+            ],
+        )
+        return (response.text or "").strip()
+    except ImportError as e:
+        raise VisionRecognitionError("google-genai package is not installed.") from e
+    except Exception as e:
+        logger.error(f"Error during vision recognition call: {e}")
+        raise VisionRecognitionError(f"Vision recognition failed: {str(e)}") from e

@@ -4,9 +4,8 @@ sqlalchemy==2.0.36
 pydantic==2.10.4
 pydantic-settings==2.7.0
 python-multipart==0.0.20
-psycopg2-binary==2.9.10
 chromadb==0.5.23
-scikit-learn==1.6.0
+scikit-learn
 google-genai==1.2.0
 pytest==8.3.4
 httpx==0.28.1

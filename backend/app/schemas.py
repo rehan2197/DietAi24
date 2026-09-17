@@ -1,33 +1,57 @@
-from typing import Optional
-
+"""
+Pydantic schemas for the DietAI24 API.
+Defines structured request/response shapes for nutrient breakdown,
+RAG retrieval candidates, clarification queries, and estimation results.
+"""
+from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 
 class NutrientBreakdown(BaseModel):
-    calories_kcal: float
-    protein_g: float
-    carbs_g: float
-    fat_g: float
-    fiber_g: float
-    calcium_mg: float
-    iron_mg: float
+    """
+    Standard nutrient profile.
+    Contains the core macronutrients and key minerals, with dynamic extension
+    support to accommodate the full 65-nutrient FNDDS / IFCT profile.
+    """
+    calories_kcal: float = 0.0
+    protein_g: float = 0.0
+    carbs_g: float = 0.0
+    fat_g: float = 0.0
+    fiber_g: float = 0.0
+    calcium_mg: float = 0.0
+    iron_mg: float = 0.0
+
+    # Extended nutrients (FNDDS 65-nutrient components: vitamins, minerals, lipids, etc.)
+    additional_nutrients: dict[str, float] = Field(default_factory=dict)
+
+    class Config:
+        extra = "allow"
+
+
+class CandidateFood(BaseModel):
+    """A candidate food item retrieved by the RAG search."""
+    food_code: str
+    food_name: str
+    region_variant: str = "Standard"
+    food_group: Optional[str] = None
+    similarity: float = Field(..., ge=0.0, le=1.0)
+    matched_queries: list[str] = []
 
 
 class RecognizedFood(BaseModel):
     food_code: str
     food_name: str
-    region_variant: str
+    region_variant: str = "Standard"
     matched_confidence: float = Field(..., ge=0.0, le=1.0)
-    portion_unit: str
+    portion_unit: str = "plate"
     portion_grams: float
     nutrients: NutrientBreakdown
 
 
 class ClarificationQuestion(BaseModel):
     """
-    A follow-up question for an attribute that's invisible to the camera
-    (milk-fat %, oil vs ghee, polished vs unpolished rice, etc.) — the
-    "Future Features" clarification-query concept from the architecture.
+    Follow-up query for attributes invisible to the camera
+    (e.g., regional style, milk fat percentage, oil vs ghee).
     """
     attribute: str
     question: str
@@ -37,6 +61,7 @@ class ClarificationQuestion(BaseModel):
 class EstimateResponse(BaseModel):
     status: str  # "ok" | "needs_clarification" | "no_match"
     foods: list[RecognizedFood] = []
+    candidates: list[CandidateFood] = []
     totals: Optional[NutrientBreakdown] = None
     clarification: Optional[ClarificationQuestion] = None
     notes: Optional[str] = None
