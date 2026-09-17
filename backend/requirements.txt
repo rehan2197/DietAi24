@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fastapi==0.115.6
 uvicorn[standard]==0.34.0
 sqlalchemy==2.0.36
@@ -9,3 +10,16 @@ scikit-learn
 google-genai==1.2.0
 pytest==8.3.4
 httpx==0.28.1
+=======
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-multipart
+chromadb
+scikit-learn
+google-genai
+pytest
+httpx
+>>>>>>> 3cf5deae33e3b78a209ac448beffd6a79b615553
